@@ -1,7 +1,7 @@
 ---
 title: NovaTech Operations Console
 colorFrom: gray
-colorTo: teal
+colorTo: blue
 sdk: streamlit
 sdk_version: "1.38.0"
 app_file: app.py
