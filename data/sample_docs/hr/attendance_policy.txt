@@ -1,0 +1,27 @@
+NovaTech Solutions Pvt. Ltd. — Attendance Policy
+
+1. Working Hours: Standard working hours are 9:30 AM to 6:30 PM, Monday to
+   Friday, with a 1-hour lunch break. Core collaboration hours are 11:00 AM to
+   4:00 PM, during which all employees must be reachable.
+
+2. Attendance Tracking: Employees must clock in/out daily via the company
+   attendance system (biometric at office locations, or the mobile app for
+   remote/field staff).
+
+3. Late Arrivals: Arriving after 10:00 AM three or more times in a calendar
+   month is flagged to the reporting manager. Persistent lateness may result
+   in a formal review.
+
+4. Minimum Attendance: Employees must maintain at least 90% attendance
+   (present days / working days) per quarter to remain eligible for
+   performance bonuses, unless on approved leave.
+
+5. Attendance Percentage Formula:
+       attendance_percentage = (days_present / total_working_days) * 100
+
+6. Half Days: Any day with less than 4 hours logged is counted as a half day.
+   Two half days are equivalent to one full day of leave deduction.
+
+7. Exceptions: Attendance requirements may be relaxed for employees on
+   approved remote work arrangements, subject to manager sign-off (see
+   Work From Home Rules).

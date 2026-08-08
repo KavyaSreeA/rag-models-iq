@@ -1,0 +1,33 @@
+NovaTech Solutions Pvt. Ltd. — Employee Handbook (Excerpt)
+
+About NovaTech: NovaTech Solutions Pvt. Ltd. is a software company with more
+than 500 employees, delivering enterprise software products across HR,
+Operations, Finance, and IT domains. Our mission is to build reliable,
+human-centered software that removes repetitive work from our customers'
+day-to-day operations.
+
+Code of Conduct: All employees are expected to act with integrity, respect
+colleagues and customers, and safeguard confidential company and customer
+information. Harassment, discrimination, and conflicts of interest must be
+reported to HR immediately via the confidential ethics hotline.
+
+Departments: NovaTech is organized into HR, Operations, Finance, IT Support,
+Engineering, Sales, and Administration. Each department has a designated
+point of contact listed on the internal wiki.
+
+IT & Security: All employees must use company-issued devices for work,
+enable multi-factor authentication, and complete annual security-awareness
+training. Report suspected phishing emails to security@novatech.example.
+
+Communication Norms: Slack is used for day-to-day communication, email for
+formal/external communication, and the HR portal for policy and leave
+requests. Response time expectation for internal Slack messages is same
+business day.
+
+Performance Reviews: Conducted twice a year (mid-year and annual), covering
+goal achievement, competencies, and development planning. Ratings feed into
+compensation review and promotion decisions.
+
+Grievance Redressal: Employees may raise grievances through their manager,
+HR business partner, or the anonymous ethics hotline. All grievances are
+acknowledged within 3 working days.

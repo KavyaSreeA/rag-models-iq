@@ -1,0 +1,26 @@
+NovaTech Solutions Pvt. Ltd. — IT Support Standard Operating Procedure (SOP)
+
+1. Raising a Ticket: All IT issues must be logged via the IT Service Desk
+   portal with a category (Hardware, Software, Network, Access) and severity
+   (P1–P4).
+
+2. Severity Definitions:
+   - P1 (Critical): Production system down, affects all users. Response: 30 min.
+   - P2 (High): Major feature broken for a team. Response: 2 hours.
+   - P3 (Medium): Individual issue with workaround available. Response: 1 business day.
+   - P4 (Low): Minor/cosmetic issue or feature request. Response: 3 business days.
+
+3. Access Requests: New system access requires manager approval via the
+   portal; access is provisioned within 1 business day of approval.
+
+4. Password Resets: Self-service password reset is available via the SSO
+   portal; IT-assisted resets require identity verification via video call.
+
+5. Equipment Requests: New hardware requests go through the Asset Management
+   module and require budget approval from the requesting department head.
+
+6. Software Installation: Only software from the approved catalog may be
+   self-installed. Requests for new software require a security review.
+
+7. Escalation: Unresolved P1/P2 tickets past SLA are automatically escalated
+   to the IT Manager and, for P1, to the CTO.
