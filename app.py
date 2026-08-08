@@ -4,9 +4,10 @@ Employee Chat Interface (Module 1) wired up to the Coordinator Agent, with a
 sidebar for knowledge-base management and conversation history, and
 expandable per-turn detail panels (agent, tools, retrieved docs, report).
 
-The visual design is a custom "ops console" theme (dark panel, monospace
-labels, per-agent color coding) injected via CSS rather than Streamlit's
-default look.
+The visual design is a clean, light, professional theme driven mainly by
+Streamlit's native theming (.streamlit/config.toml) — which reliably themes
+every built-in widget (buttons, file uploader, radios, etc.) — plus a small
+CSS layer on top for the header, section labels, and per-agent color chips.
 """
 from __future__ import annotations
 
@@ -32,75 +33,65 @@ _BLANK_AVATAR = (
 )
 
 # --- Agent identity: label, short code, accent color ------------------------
+# Colors chosen for readable contrast as text-on-light-tint chips (WCAG AA
+# against a white/near-white background).
 AGENT_META = {
-    "hr": ("HR AGENT", "HR", "#5b8def"),
-    "research": ("RESEARCH AGENT", "RS", "#a683f2"),
-    "email": ("EMAIL AGENT", "EM", "#3fbf8f"),
-    "document": ("DOCUMENT AGENT", "DC", "#e0a940"),
-    "python": ("PYTHON TOOL AGENT", "PY", "#e0625a"),
-    "memory": ("MEMORY", "MM", "#3fc4c4"),
-    "sequential": ("SEQUENTIAL WORKFLOW", "SQ", "#d868a8"),
-    "parallel": ("PARALLEL WORKFLOW", "PL", "#e08a3f"),
-    "error": ("SYSTEM", "!!", "#c94b4b"),
+    "hr": ("HR AGENT", "HR", "#2563eb"),
+    "research": ("RESEARCH AGENT", "RS", "#7c3aed"),
+    "email": ("EMAIL AGENT", "EM", "#059669"),
+    "document": ("DOCUMENT AGENT", "DC", "#b45309"),
+    "python": ("PYTHON TOOL AGENT", "PY", "#dc2626"),
+    "memory": ("MEMORY", "MM", "#0891b2"),
+    "sequential": ("SEQUENTIAL WORKFLOW", "SQ", "#db2777"),
+    "parallel": ("PARALLEL WORKFLOW", "PL", "#ea580c"),
+    "error": ("SYSTEM", "!!", "#b91c1c"),
 }
 
 
 def agent_meta(agent: str):
-    return AGENT_META.get(agent, ("ASSISTANT", "AI", "#5b8def"))
+    return AGENT_META.get(agent, ("ASSISTANT", "AI", "#2563eb"))
 
 
-# --- Custom console theme ---------------------------------------------------
+# --- Light professional theme (layered on top of .streamlit/config.toml) ---
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
     :root {
-        --console-bg: #0b0e13;
-        --console-panel: #12161d;
-        --console-panel-alt: #161b23;
-        --console-border: #232a35;
-        --console-text: #d9e1ea;
-        --console-muted: #7c8898;
-        --console-accent: #4fd1c5;
+        --panel-border: #e2e5ea;
+        --text-primary: #1a1f28;
+        --text-muted: #6b7280;
+        --accent: #4338ca;
     }
 
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
-
-    .stApp { background-color: var(--console-bg); }
-
-    section[data-testid="stSidebar"] {
-        background-color: var(--console-panel);
-        border-right: 1px solid var(--console-border);
-    }
-
-    /* Console header */
+    /* Header */
     .console-header {
         display: flex; align-items: baseline; gap: 14px;
-        border-bottom: 1px solid var(--console-border);
+        border-bottom: 1px solid var(--panel-border);
         padding-bottom: 14px; margin-bottom: 6px;
     }
     .console-header .mark {
         font-family: 'Space Grotesk', sans-serif; font-weight: 700;
-        font-size: 1.65rem; color: var(--console-text); letter-spacing: 0.5px;
+        font-size: 1.65rem; color: var(--text-primary); letter-spacing: 0.3px;
     }
-    .console-header .mark span { color: var(--console-accent); }
+    .console-header .mark span { color: var(--accent); }
     .console-header .sub {
-        font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
-        color: var(--console-muted); text-transform: uppercase; letter-spacing: 1.5px;
+        font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem;
+        color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.3px;
     }
 
     .console-strip {
         font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
-        color: var(--console-muted); letter-spacing: 0.5px;
+        color: var(--text-muted); letter-spacing: 0.4px;
         margin-bottom: 18px; text-transform: uppercase;
     }
 
     /* Sidebar section labels */
     .panel-label {
         font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
-        color: var(--console-muted); text-transform: uppercase;
-        letter-spacing: 1.5px; border-bottom: 1px solid var(--console-border);
+        color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 1.3px; border-bottom: 1px solid var(--panel-border);
         padding-bottom: 6px; margin: 4px 0 10px 0;
     }
 
@@ -108,33 +99,22 @@ st.markdown(
     .agent-chip {
         display: inline-flex; align-items: center; gap: 7px;
         font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
-        font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-        padding: 3px 10px; border-radius: 3px; margin-bottom: 8px;
+        font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+        padding: 3px 10px; border-radius: 4px; margin-bottom: 8px;
     }
     .agent-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
 
-    /* Assistant response card */
-    .response-card {
-        border-left: 3px solid var(--console-border);
-        padding: 2px 0 2px 14px; margin: 4px 0 10px 0;
-    }
-
+    /* Chat message cards */
     div[data-testid="stChatMessage"] {
-        background-color: var(--console-panel-alt);
-        border: 1px solid var(--console-border);
-        border-radius: 6px;
+        background-color: #ffffff;
+        border: 1px solid var(--panel-border);
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
     }
 
     .stButton > button {
         font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
-        letter-spacing: 0.5px; border-radius: 3px;
-        background-color: var(--console-panel-alt);
-        border: 1px solid var(--console-border); color: var(--console-text);
-    }
-    .stButton > button:hover { border-color: var(--console-accent); color: var(--console-accent); }
-
-    .stChatInputContainer, div[data-testid="stChatInput"] {
-        border-color: var(--console-border) !important;
+        letter-spacing: 0.4px; border-radius: 5px;
     }
 
     /* Hide the blank-pixel chat avatar entirely — identity comes from the
