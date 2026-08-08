@@ -140,6 +140,33 @@ the module-by-module implementation, and [`data/sample_docs/`](data/sample_docs/
 for the seed HR policy and company documents used to build the demo knowledge
 base.
 
+## Deploying to Hugging Face Spaces
+
+The code is deploy-ready; creating and connecting the Space is a manual step
+that needs your Hugging Face account (I don't hold credentials for you):
+
+1. Go to https://huggingface.co/new-space, choose SDK **Streamlit**, and
+   create the Space (e.g. `novatech-operations-console`).
+2. In the new Space's **Settings -> Variables and secrets**, add a secret
+   named `GROQ_API_KEY` with your Groq key. Optionally add `LLM_PROVIDER`,
+   `EMBEDDING_PROVIDER`, etc. if you want non-default values.
+3. Push this repo's code to the Space's git remote (shown on the Space page,
+   looks like `https://huggingface.co/spaces/<you>/<space-name>`):
+
+   ```bash
+   git remote add space https://huggingface.co/spaces/<you>/<space-name>
+   git push space main
+   ```
+
+4. Replace the Space's `README.md` with the contents of
+   [HF_SPACE_README.md](HF_SPACE_README.md) (it carries the YAML front matter
+   Spaces needs to detect the Streamlit SDK/entrypoint) — either edit it in
+   the Space's file UI, or locally: `cp HF_SPACE_README.md README.md` on a
+   branch pushed to `space` only, so the GitHub repo keeps its own README.
+5. The Space will build and boot automatically. First boot downloads the
+   local HuggingFace embedding model (~90MB), so expect the first build to
+   take a few minutes.
+
 ## Notes / known limitations
 
 - Default LLM provider is Groq (`llama-3.3-70b-versatile`); switch to OpenAI
