@@ -14,5 +14,5 @@ A multi-agent enterprise operations assistant built with LangChain, LangGraph,
 Groq (Llama 3.3), ChromaDB, and Streamlit. See the main project README for
 full architecture and module documentation.
 
-Requires a `GROQ_API_KEY` Space secret to function (Settings -> Variables and
-secrets -> New secret).
+Requires `GROQ_API_KEY` and `HUGGINGFACE_API_TOKEN` Space secrets to function
+(Settings -> Variables and secrets -> New secret).

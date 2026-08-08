@@ -69,16 +69,21 @@ Company Knowledge Base — ChromaDB (`hr_policies`, `company_docs` collections)
    Then open `.env` and set at minimum:
 
    - `GROQ_API_KEY` — required (default provider). Get one at https://console.groq.com/keys
-
-   Embeddings for the ChromaDB knowledge base default to a local HuggingFace
-   sentence-transformers model (`EMBEDDING_PROVIDER=huggingface`) — free, no
-   key, runs on CPU. First run downloads the model (~90MB) automatically.
+   - `HUGGINGFACE_API_TOKEN` — required (default embeddings provider). Free
+     token at https://huggingface.co/settings/tokens. Embeddings default to
+     HF's hosted Inference API (`EMBEDDING_PROVIDER=huggingface_api`) — a
+     lightweight API call with no heavy local ML dependencies, which matters
+     a lot on resource-limited free hosting.
 
    Everything else is optional (the app runs fully without them, using local
    stubs — see below):
 
    - `LLM_PROVIDER=openai` + `OPENAI_API_KEY` — switch the chat model to
      OpenAI instead of Groq.
+   - `EMBEDDING_PROVIDER=huggingface_local` — run the embedding model
+     locally instead of via the API (no token needed, but pulls in
+     `torch`/`transformers`/`sentence-transformers`, ~1-2GB, and is much
+     slower to install and cold-boot — not recommended on free hosting).
    - `TAVILY_API_KEY` — better web search for the Research Agent. Without it,
      the app uses free DuckDuckGo + Wikipedia search.
    - `GOOGLE_CREDENTIALS_PATH` (default `credentials.json`) — for real Gmail
@@ -147,9 +152,12 @@ that needs your Hugging Face account (I don't hold credentials for you):
 
 1. Go to https://huggingface.co/new-space, choose SDK **Streamlit**, and
    create the Space (e.g. `novatech-operations-console`).
-2. In the new Space's **Settings -> Variables and secrets**, add a secret
-   named `GROQ_API_KEY` with your Groq key. Optionally add `LLM_PROVIDER`,
-   `EMBEDDING_PROVIDER`, etc. if you want non-default values.
+2. In the new Space's **Settings -> Variables and secrets**, add secrets
+   named `GROQ_API_KEY` and `HUGGINGFACE_API_TOKEN`. Optionally add
+   `LLM_PROVIDER`, `EMBEDDING_PROVIDER`, etc. if you want non-default values.
+   Note: on Hugging Face Spaces specifically, a Space-scoped token may
+   already grant Inference API access without a separate secret — check the
+   Space's own token permissions before assuming you need a second one.
 3. Push this repo's code to the Space's git remote (shown on the Space page,
    looks like `https://huggingface.co/spaces/<you>/<space-name>`):
 
@@ -163,16 +171,16 @@ that needs your Hugging Face account (I don't hold credentials for you):
    Spaces needs to detect the Streamlit SDK/entrypoint) — either edit it in
    the Space's file UI, or locally: `cp HF_SPACE_README.md README.md` on a
    branch pushed to `space` only, so the GitHub repo keeps its own README.
-5. The Space will build and boot automatically. First boot downloads the
-   local HuggingFace embedding model (~90MB), so expect the first build to
-   take a few minutes.
+5. The Space will build and boot automatically — no heavy local model
+   download needed since embeddings default to the hosted Inference API.
 
 ## Notes / known limitations
 
 - Default LLM provider is Groq (`llama-3.3-70b-versatile`); switch to OpenAI
   or change the model via `.env`.
-- Embeddings default to a local HuggingFace model since Groq has no
-  embeddings endpoint; switch to OpenAI embeddings via `EMBEDDING_PROVIDER`.
+- Embeddings default to the Hugging Face hosted Inference API since Groq has
+  no embeddings endpoint of its own; switch via `EMBEDDING_PROVIDER` to
+  `openai` or `huggingface_local`.
 - Web search defaults to free DuckDuckGo + Wikipedia (no key required);
   results are noisier than a paid provider like Tavily.
 - Gmail "send" only sends real email once you've completed the Google OAuth

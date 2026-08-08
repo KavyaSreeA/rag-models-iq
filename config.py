@@ -34,12 +34,18 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_CHAT_MODEL = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
 OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 
-# Groq has no embeddings endpoint, so embeddings default to a local
-# HuggingFace sentence-transformers model (no API key required, runs on
-# CPU). Set EMBEDDING_PROVIDER=openai to use OpenAI embeddings instead
-# (requires OPENAI_API_KEY even if the chat model is Groq).
-EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "huggingface").lower()
+# Groq has no embeddings endpoint. Default embeddings provider is the
+# Hugging Face hosted Inference API — a lightweight API call, no torch/
+# sentence-transformers/transformers install or local model download, which
+# matters a lot on resource-limited free hosting (Streamlit Cloud, HF
+# Spaces). Options:
+#   "huggingface_api"   (default) hosted HF Inference API — needs HUGGINGFACE_API_TOKEN
+#   "huggingface_local"  local sentence-transformers model — no key, but
+#                         heavy (~1-2GB deps) and slow to cold-boot
+#   "openai"              OpenAI embeddings — needs OPENAI_API_KEY
+EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "huggingface_api").lower()
 HUGGINGFACE_EMBEDDING_MODEL = os.getenv("HUGGINGFACE_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN", "")
 
 # --- Optional integrations ------------------------------------------------
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
