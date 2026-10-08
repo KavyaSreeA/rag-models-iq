@@ -12,6 +12,27 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+def _get(name: str, default: str = "") -> str:
+    """Read a setting from the environment, falling back to Streamlit secrets.
+
+    Streamlit Cloud exposes top-level secrets as env vars, but reading
+    st.secrets directly as a fallback makes deployment robust either way.
+    """
+    value = os.getenv(name)
+    if value:
+        return value.strip()
+    try:
+        import streamlit as st
+
+        secret = st.secrets.get(name)
+        if secret:
+            return str(secret).strip()
+    except Exception:
+        pass
+    return default
+
+
 # --- Paths -------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -27,10 +48,10 @@ DRIVE_STORAGE_DIR = DATA_DIR / "drive_storage"
 # LLM_PROVIDER selects the chat model backend: "groq" (default) or "openai".
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq").lower()
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_API_KEY = _get("GROQ_API_KEY")
 GROQ_CHAT_MODEL = os.getenv("GROQ_CHAT_MODEL", "llama-3.3-70b-versatile")
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = _get("OPENAI_API_KEY")
 OPENAI_CHAT_MODEL = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
 OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 
@@ -45,10 +66,10 @@ OPENAI_EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-s
 #   "openai"              OpenAI embeddings — needs OPENAI_API_KEY
 EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "huggingface_api").lower()
 HUGGINGFACE_EMBEDDING_MODEL = os.getenv("HUGGINGFACE_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
-HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN", "")
+HUGGINGFACE_API_TOKEN = _get("HUGGINGFACE_API_TOKEN")
 
 # --- Optional integrations ------------------------------------------------
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
+TAVILY_API_KEY = _get("TAVILY_API_KEY")
 GOOGLE_CREDENTIALS_PATH = BASE_DIR / os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials.json")
 GOOGLE_TOKEN_PATH = BASE_DIR / os.getenv("GOOGLE_TOKEN_PATH", "token.json")
 GOOGLE_DRIVE_FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID", "")

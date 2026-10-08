@@ -155,7 +155,18 @@ with st.sidebar:
     if not key_ready:
         st.warning(
             f"No API key found for LLM_PROVIDER={config.LLM_PROVIDER!r}. "
-            f"Set it in your .env file."
+            "Set it in your .env file (local) or in the app's Secrets "
+            "settings (Streamlit Cloud)."
+        )
+
+    with st.expander("Configuration status"):
+        st.write(
+            {
+                "LLM provider": config.LLM_PROVIDER,
+                "GROQ_API_KEY": "set" if config.GROQ_API_KEY else "missing",
+                "Embedding provider": config.EMBEDDING_PROVIDER,
+                "HUGGINGFACE_API_TOKEN": "set" if config.HUGGINGFACE_API_TOKEN else "missing",
+            }
         )
 
     uploaded = st.file_uploader(
