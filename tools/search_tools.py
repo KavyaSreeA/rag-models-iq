@@ -16,9 +16,14 @@ import config
 
 def _web_search_tool() -> BaseTool:
     if config.TAVILY_API_KEY:
-        from langchain_community.tools.tavily_search import TavilySearchResults
+        from langchain_tavily import TavilySearch
+        from langchain_tavily._utilities import TavilySearchAPIWrapper
 
-        return TavilySearchResults(max_results=5, tavily_api_key=config.TAVILY_API_KEY)
+        # Pass the key explicitly (it may come from st.secrets, not an env var).
+        return TavilySearch(
+            max_results=5,
+            api_wrapper=TavilySearchAPIWrapper(tavily_api_key=config.TAVILY_API_KEY),
+        )
 
     from langchain_community.tools import DuckDuckGoSearchRun
 
